@@ -31,6 +31,18 @@
         </template>
       </el-table-column>
     </el-table>
+        <el-pagination
+        v-model:page-size="pageSize"
+        :page-sizes="[5,10,20,30]"
+         backgorund
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        >
+        
+        </el-pagination>
+    
       <el-dialog  title="添加商品" v-model="display" width="45%">
         <el-form :model="goodsForm" ref="goodsref" :rules="rules" label-width="80px" >
           <el-form-item label="店铺名称" >
@@ -87,6 +99,9 @@ const goodsList=ref([])
 const display=ref(false)
 const imageURL=ref('')
 const imageFile=ref(null)
+const total=ref(0)
+const pageSize =ref(5)
+const pageNo =ref(1)
 const rules=ref({
   product: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
 })
@@ -102,9 +117,10 @@ let goodsForm =reactive({
 const categoryList =ref([])
 // 商品列表数据
 const getGoodsList=async()=>{
-  const data =await RequestGoodsList()
+  const data =await RequestGoodsList(pageNo.value,pageSize.value)
   const {resultCode,resultInfo}=data 
   if(resultCode===1){
+    total.value=resultInfo.total
     goodsList.value=resultInfo.list
   }
 }
@@ -159,6 +175,16 @@ const  onSubmit=async()=>{
     
   }
 }
+// 页数 
+const handleSizeChange = value =>{
+  pageSize.value=value 
+  getGoodsList()
+}
+const handleCurrentChange = value =>{
+  pageNo.value=value
+  getGoodsList() 
+  
+} 
 // 删除商品
 const bindDetal=async id =>{
   const data =await RequestGoodsDetal(id)

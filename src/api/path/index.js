@@ -12,12 +12,13 @@ export const RequestGoodLogin=(username,password)=>{
     })
 }
 // 列表数据接口  
-export const  RequestGoodsList=(pageSize=5)=>{
+export const  RequestGoodsList=(pageNo=1,pageSize=5)=>{
     return axiosInstance({
         method:'GET',
         url:'/api/shop',
         params:{
             pageSize,
+            pageNo,
         }
     })
 }

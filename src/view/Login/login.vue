@@ -27,8 +27,8 @@ const store =useAccount()
 const router=useRouter()
 const loginRef =ref(null)
 const acount =ref({
-    username:'root',
-    password:'root',
+    username:'',
+    password:'',
 })
 const rules =ref({
     username:[{required:true,message:'请输入用户名',trigger:'blur'}],
